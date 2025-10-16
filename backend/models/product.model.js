@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-// Product Schema (form or required details to create a product)
+//Product Schema : a form or required details to create a product
 
 const productSchema = new mongoose.Schema({
     title: { type: String, required: true },
