@@ -31,7 +31,7 @@ export const registerUser = async (req, res) => {
       await sendEmail(
         newUser.email,
         "Welcome!",
-        `Hi ${newUser.name}, welcome to GLOWSALE!`
+        `Hi ${newUser.name}, welcome to THE GOLDEN BALL!`
       );
     } catch (emailErr) {
       console.log("Email failed:", emailErr.message);
