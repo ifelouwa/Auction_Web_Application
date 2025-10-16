@@ -1,6 +1,7 @@
 import User from "../models/user.model.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
+import { sendEmail } from "../utils/sendEmail.js";
 
 //Generate JWT Token
 const generateToken = (user) => {
@@ -24,6 +25,17 @@ export const registerUser = async (req, res) => {
 
     //Create new user
     const newUser = await User.create({ name, email, password, phone, role });
+
+    //Send welcome email (non-blocking)
+    try {
+      await sendEmail(
+        newUser.email,
+        "Welcome!",
+        `Hi ${newUser.name}, welcome to GLOWSALE!`
+      );
+    } catch (emailErr) {
+      console.log("Email failed:", emailErr.message);
+    }
 
     //Generate token
     const token = generateToken(newUser);
