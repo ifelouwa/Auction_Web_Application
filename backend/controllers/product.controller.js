@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import Product from "../models/product.model.js";
 
+//Get all products
 export const getProducts = async ( req, res) => {
   try {
     const products = await Product.find({});
@@ -11,6 +12,7 @@ export const getProducts = async ( req, res) => {
   }
 };
 
+//Get product by ID
 export const getProductById = async (req, res) => {
   const { id } = req.params; 
   if (!mongoose.Types.ObjectId.isValid(id)){
@@ -28,6 +30,7 @@ export const getProductById = async (req, res) => {
   } 
 };
 
+//Create a new product
 export const createProduct = async (req, res) => {
   try {
     const { title, startingPrice, image, description, startTime, endTime } = req.body;
@@ -54,6 +57,7 @@ export const createProduct = async (req, res) => {
   }
 };
 
+//Update a product
 export const updateProduct = async (req, res) => {
   const { id } = req.params;
 
@@ -73,6 +77,7 @@ export const updateProduct = async (req, res) => {
   }
 };
 
+//Delete a product
 export const deleteProduct = async (req, res) => {
   const { id } = req.params;
 
@@ -87,7 +92,7 @@ export const deleteProduct = async (req, res) => {
       return res.status(404).json({ success: false, message: "Product not found" });
     }
 
-    // Only admin OR owner can delete
+    //Only admin OR owner can delete
     if (req.user.role !== "admin" && product.seller.toString() !== req.user._id.toString()) {
       return res.status(403).json({ success: false, message: "Not authorized to delete this product" });
     }
