@@ -2,7 +2,7 @@ import Product from "../models/product.model.js";
 import Bid from "../models/bid.model.js";
 
 
-// Get all bids placed by the logged-in user
+//Get all bids placed by the logged-in user
 export const getUserBids = async (req, res) => {
   try {
     const userId = req.user._id;
@@ -21,7 +21,7 @@ export const getUserBids = async (req, res) => {
   }
 };
 
-//Delete a bid (only by the user who made it)
+//Delete a bid, only by the user who made it
 export const deleteBid = async (req, res) => {
   try {
     const { bidId } = req.params;
@@ -43,10 +43,10 @@ export const deleteBid = async (req, res) => {
   }
 };
 
-// Place a bid on a product
+//Place a bid on a product
 export const placeBid = async (req, res) => {
   try {
-    const { id } = req.params; // Product ID
+    const { id } = req.params; //Product ID
     const { amount } = req.body;
 
     const product = await Product.findById(id);
@@ -80,7 +80,7 @@ export const placeBid = async (req, res) => {
   }
 };
 
-// Get all bids for a specific product, sorted by amount (highest first)
+//Get all bids for a specific product, sorted by amount
 export const getBidsForProduct = async (req, res) => {
   try {
     const { id } = req.params; // Product ID
