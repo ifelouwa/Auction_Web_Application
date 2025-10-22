@@ -26,13 +26,16 @@ export const registerUser = async (req, res) => {
     //Create new user
     const newUser = await User.create({ name, email, password, phone, role });
 
-    //Send welcome email (non-blocking)
+    //Send welcome email
     try {
       await sendEmail(
         newUser.email,
-        "Welcome!",
-        `Hi ${newUser.name}, welcome to THE GOLDEN BALL!`
+          "Welcome!",
+          "Successfully registered on The Golden Ball!",
+          `<h2>Welcome to The Golden Ball!</h2>
+          <p>Your registration was successful. You can now start bidding on products and enjoy our services.</p>`
       );
+
     } catch (emailErr) {
       console.log("Email failed:", emailErr.message);
     }
