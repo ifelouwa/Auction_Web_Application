@@ -50,6 +50,7 @@ export const createProduct = async (req, res) => {
     });
 
     await newProduct.save();
+    console.log("Product created:", newProduct._id, "by User:", req.user.name);
     res.status(201).json({ success: true, data: newProduct });
   } catch (error) {
     console.error("Error creating product:", error.message);
@@ -57,23 +58,39 @@ export const createProduct = async (req, res) => {
   }
 };
 
-//Update a product
+// Update a product
 export const updateProduct = async (req, res) => {
   const { id } = req.params;
 
-  const product = req.body;
-
-  if (!mongoose.Types.ObjectId.isValid(id)){
-    return res.status(404).json({ success: false, message: "Invalid Product Id"});
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ success: false, message: "Invalid Product ID" });
   }
 
   try {
-    const updatedProduct = await Product.findByIdAndUpdate(id, product, { new: true, runValidators: true });
+    // Find the product in DB
+    const product = await Product.findById(id);
+
+    if (!product) {
+      return res.status(404).json({ success: false, message: "Product not found" });
+    }
+
+    // Only admin OR owner can update
+    if (
+      product.seller.toString() !== req.user._id.toString() && req.user.role !== "admin"
+    ) {
+      return res.status(403).json({ success: false, message: "Not authorized to update this product" });
+    }
+
+    // Proceed with update
+    const updatedProduct = await Product.findByIdAndUpdate(id, req.body, {new: true,runValidators: true,
+    });
+
+    console.log("Product Updated:", id, "User is: ",req.user.name);
     res.status(200).json({ success: true, data: updatedProduct });
-    console.log("Updates received:", req.body);
-  }catch (error) {
-    res.status(500).json({ success: false, message: "Product not updated" });
-    console.log("Error in updating product:", error.message);
+
+  } catch (error) {
+    console.error("Error updating product:", error.message);
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };
 
@@ -98,6 +115,7 @@ export const deleteProduct = async (req, res) => {
     }
 
     await Product.findByIdAndDelete(id);
+    console.log("Product Deleted:", id, "User is: ",req.user.name);
     res.status(200).json({ success: true, message: "Product deleted successfully" });
   } catch (error) {
     console.log("Error deleting product:", error.message);
