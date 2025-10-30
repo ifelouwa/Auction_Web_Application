@@ -1,5 +1,5 @@
 import express from "express";
-import protect from "../middleware/authMiddleware.js";
+import { protect } from "../middleware/authMiddleware.js";
 import { 
     getUserBids, 
     deleteBid,
@@ -14,6 +14,6 @@ const router = express.Router();
 router.get("/my-bids", protect, getUserBids);
 router.delete("/:bidId", protect, deleteBid);
 router.post("/:id/bid", protect, placeBid);
-router.post("/:id/bid", protect, getBidsForProduct);
+router.post("/:id/bids", protect, getBidsForProduct);
 
 export default router;

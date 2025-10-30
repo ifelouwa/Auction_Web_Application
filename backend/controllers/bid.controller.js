@@ -14,7 +14,11 @@ export const getUserBids = async (req, res) => {
       return res.status(404).json({ success: false, message: "No bids found for this user" });
     }
 
-    res.status(200).json({ success: true, data: bids });
+    const bidCount = bids.length;
+    const highestBid = Math.max(...bids.map(b => b.amount));
+
+    res.status(200).json({ success: true, totalBids: bidCount, highestBid, data: bids });
+
   } catch (error) {
     console.error("Error fetching user bids:", error.message);
     res.status(500).json({ success: false, message: "Server error" });
@@ -72,6 +76,9 @@ export const placeBid = async (req, res) => {
     product.currentPrice = amount;
     product.bids.push(newBid._id);
     await product.save();
+
+     //Increase user's bid count since user model has "bidCount"
+    await User.findByIdAndUpdate(req.user._id, { $inc: { bidCount: 1 } });
 
     res.status(201).json({ success: true, message: "Bid placed successfully", data: newBid });
   } catch (error) {
