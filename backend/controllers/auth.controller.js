@@ -15,16 +15,27 @@ const generateToken = (user) => {
 //Register a new user
 export const registerUser = async (req, res) => {
   try {
+    console.log("Registration request received:", req.body);
     const { name, username, email, password, phone, role } = req.body;
 
     //Check if user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
+      console.log("User already exists with email:", email);
       return res.status(400).json({ message: "User already exists" });
     }
 
+    //Check if username already exists
+    const existingUsername = await User.findOne({ username });
+    if (existingUsername) {
+      console.log("Username already exists:", username);
+      return res.status(400).json({ message: "Username already exists" });
+    }
+
+    console.log("Creating new user with data:", { name, username, email, phone, role });
     //Create new user
     const newUser = await User.create({ name, username, email, password, phone, role });
+    console.log("New user created:", newUser._id);
 
     //Send welcome email
     try {
@@ -32,14 +43,15 @@ export const registerUser = async (req, res) => {
         newUser.email,
         "Welcome to The Golden Ball!",
         newUser.username,
-        `Welcome to <b>The Golden Ball</b>, your trusted online auction platform. 
-        Your account has been created successfully. Explore exclusive listings, 
+        `Welcome to <b>The Golden Ball</b>, your trusted online auction platform.
+        Your account has been created successfully. Explore exclusive listings,
         bid on premium items, and enjoy secure transactions.`,
         "https://thegoldenball.com" // replace with your actual hosted URL later
 );
 
     } catch (emailErr) {
       console.log("Email failed:", emailErr.message);
+      // Don't fail registration if email fails
     }
 
     //Generate token

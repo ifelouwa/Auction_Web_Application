@@ -15,7 +15,7 @@ export const sendEmail = async (to, subject, username, message, link) => {
     const htmlContent = `
       <div style="font-family: Arial, sans-serif; background-color: #f9f9f9; padding: 30px;">
         <div style="max-width: 600px; margin: auto; background-color: #ffffff; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
-          <div style="background-color: #f4b400; color: #fff; padding: 15px 20px; border-radius: 10px 10px 0 0;">
+          <div style="background-color: #000000ff; color: #fff; padding: 15px 20px; border-radius: 10px 10px 0 0;">
             <h2 style="margin: 0; font-size: 22px;">The Golden Ball</h2>
           </div>
 
@@ -28,7 +28,7 @@ export const sendEmail = async (to, subject, username, message, link) => {
             ${
               link
                 ? `<p style="margin-top: 20px;">
-                    <a href="${link}" style="background-color: #f4b400; color: white; text-decoration: none; padding: 10px 18px; border-radius: 5px; display: inline-block;">
+                    <a href="${link}" style="background-color: #000000ff; color: white; text-decoration: none; padding: 10px 18px; border-radius: 5px; display: inline-block;">
                       Visit The Golden Ball
                     </a>
                   </p>`
@@ -37,14 +37,14 @@ export const sendEmail = async (to, subject, username, message, link) => {
 
             <p style="margin-top: 30px; font-size: 13px; color: #888;">
               If the button doesn’t work, copy and paste this link into your browser:<br>
-              <a href="${link}" style="color: #f4b400;">${link}</a>
+              <a href="${link}" style="color: #000000ff;">${link}</a>
             </p>
           </div>
 
           <div style="background-color: #fafafa; padding: 15px; text-align: center; border-top: 1px solid #eee; border-radius: 0 0 10px 10px;">
             <p style="font-size: 13px; color: #666;">
               © ${new Date().getFullYear()} The Golden Ball. All rights reserved.<br>
-              <a href="${link}" style="color: #f4b400; text-decoration: none;">Visit our website</a>
+              <a href="${link}" style="color: #000000ff; text-decoration: none;">Visit our website</a>
             </p>
           </div>
         </div>
