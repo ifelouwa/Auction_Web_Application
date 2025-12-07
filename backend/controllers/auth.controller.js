@@ -46,7 +46,7 @@ export const registerUser = async (req, res) => {
         `Welcome to <b>The Golden Ball</b>, your trusted online auction platform.
         Your account has been created successfully. Explore exclusive listings,
         bid on premium items, and enjoy secure transactions.`,
-        "https://thegoldenball.com" // replace with your actual hosted URL later
+        "https://golden-ball.vercel.app/" // replace with your actual hosted URL later
 );
 
     } catch (emailErr) {
